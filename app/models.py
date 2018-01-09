@@ -4,6 +4,7 @@ from app import db
 
 # import the db connection from the app/__init__.py
 
+
 class Users(db.Model):
     """ This class represents the users table"""
     __tablename__ = 'users'
@@ -15,8 +16,8 @@ class Users(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
-    categories = db.relationship(
-        'Categories', order_by='categories.id', cascade="all, delete-orphan")
+    # categories = db.relationship(
+    #     'Categories', order_by='categories.id', cascade="all, delete-orphan")
 
     def __init__(self, email):
         """initialize with user email."""
@@ -44,17 +45,17 @@ class Categories(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(100), unique=True)
-    category_owner_email = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    users_id = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
-    recipes = db.relationship(
-        'Recipes', order_by='recipes.id', cascade="all, delete-orphan")
+    # recipes = db.relationship(
+    #     'Recipes', order_by='recipes.id', cascade="all, delete-orphan")
 
-    def __init__(self, category_name):
+    def __init__(self, category_name, users_id):
         """initialize with user email."""
         self.category_name = category_name
+        self.users_id = users_id
 
     def save(self):
         db.session.add(self)
@@ -80,7 +81,7 @@ class Recipes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipe_name = db.Column(db.String(100), unique=True)
     recipe_description = db.Column(db.String(255))
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    # category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
